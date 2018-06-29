@@ -1,0 +1,43 @@
+<input class="form-control mr-sm-2 mb-sm-2" type="text" [(ngModel)]="filterText" (input)="onFilterData($event);" placeholder="Search by title"
+  aria-label="Search by title">
+<h1 *ngIf="!filterText.length">List of stories</h1>
+<h1 *ngIf="filterText.length">Search result by title: {{ filterText }}</h1>
+<div class="table-responsive">
+  <table class="table table-bordered table-hover">
+    <thead class="thead-dark" *ngIf="filteredData.length || tableData.length">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Url</th>
+        <th scope="col">Created at</th>
+        <th scope="col">Author</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="!filterText.length;else filteredTemplate">
+      <tr *ngFor="let data of tableData;let i = index;" (click)="onRowClick(data, $event)">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ data.title }}</td>
+        <td>{{ data.url }}</td>
+        <td> {{ data.created_at | date:dd:mm:yy }}</td>
+        <td>{{ data.author }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #filteredTemplate>
+  <tbody *ngIf="filteredData.length;else nodata">
+    <tr *ngFor="let data of filteredData;let i = index;" (click)="onRowClick(data, $event)">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ data.title }}</td>
+      <td>{{ data.url }}</td>
+      <td> {{ data.created_at | date:dd:mm:yy }}</td>
+      <td>{{ data.author }}</td>
+    </tr>
+  </tbody>
+</ng-template>
+
+<ng-template #nodata>
+  <h3>No search result</h3>
+</ng-template>
+<ng-template #popupContainer></ng-template>
